@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +73,14 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'role' => $data['role'],
         ]);
+    }
+
+    public function registered(Request $request, $user) 
+    {
+        if($request->ajax()) {
+            return response()->json(['message' => __('Gracias por crear tu cuenta como profesor en :app', [ 'app' => env('APP_NAME')])]);
+        }
+        return redirect('/');
     }
 
     public function redirectPath()
