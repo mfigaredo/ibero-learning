@@ -42,3 +42,24 @@ Route::group(['prefix' => 'courses', 'as' => 'courses.'], function() {
     Route::get('/', 'CourseController@index')->name('index');
     Route::post('/search', 'CourseController@search')->name('search');
 });
+
+Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'middleware' => ['teacher']], function() {
+    Route::get('/', 'TeacherController@index')->name('index');
+    /**
+     * COURSE Routes
+     */
+    Route::get('/courses', 'TeacherController@courses')->name('courses');
+    Route::get('/courses/create', 'TeacherController@createCourse')->name('courses.create');
+    Route::get('/courses/update', 'TeacherController@updateCourse')->name('courses.update');
+    /**
+     * UNIT Routes
+     */
+    Route::get('/units', 'TeacherController@units')->name('units');
+    Route::get('/units/create', 'TeacherController@createUnit')->name('units.create');
+    Route::post('/units/store', 'TeacherController@storeUnit')->name('units.store');
+    /**
+     * COUPON Routes
+     */
+    Route::get('/coupons', 'TeacherController@index')->name('coupons');
+
+});

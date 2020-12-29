@@ -29,10 +29,16 @@
                 <nav class="main-menu">
                     <ul>
                         <li><a href="{{ route('welcome') }}">{{ __("Inicio") }}</a></li>
-                        <li><a href="#">About us</a></li>
+                        
                         <li><a href="courses.html">Courses</a></li>
                         <li><a href="blog.html">News</a></li>
                         <li><a href="contact.html">Contact</a></li>
+
+                        @teacher
+                            <li>
+                                <a class="brand-text" href="{{ route('teacher.index') }}">{{ __('Profesor') }}</a>
+                            </li>
+                        @endteacher
                     </ul>
                 </nav>
                 

@@ -1,5 +1,7 @@
 <?php
 
+use App\Providers\BladeServiceProvider;
+
 return [
 
     /*
@@ -175,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        App\Providers\BladeServiceProvider::class,
     ],
 
     /*
