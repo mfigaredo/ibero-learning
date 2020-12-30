@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Hashidable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -42,10 +43,29 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Course extends Model
 {
-    //
+    use Hashidable;
+
     const PUBLISHED = 1;
     const PENDING = 2;
     const REJECTED = 3;
+
+    const prices = [
+        '9.99' => '9.99€',
+        '12.99' => '12.99€',
+        '19.99' => '19.99€',
+        '29.99' => '29.99€',
+        '49.99' => '49.99€'
+    ];
+
+    public static function boot() {
+        parent::boot();
+
+        if( !app()->runningInConsole()) {
+            self::saving(function ($table) {
+                $table->user_id = auth()->id();
+            });
+        }
+    }
 
     protected $fillable = [
         'user_id', 'title', 'description', 'picture', 'price', 'featured', 'status'
@@ -69,6 +89,10 @@ class Course extends Model
 
     public function reviews() {
         return $this->hasMany(Review::class);
+    }
+
+    public function units() {
+        return $this->hasMany(Unit::class)->orderBy('order', 'asc');
     }
 
     public function scopeFiltered(Builder $builder) {

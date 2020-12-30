@@ -33,7 +33,7 @@
                             <td>{{ $unit->unit_type }}</td>
                             <td>{{ $unit->unit_time ?? "N/A" }}</td>
                             <td>{{ $unit->created_at->format("d/m/Y H:i") }}</td>
-                            <td>{{ $unit->updated_at->format("d/m/Y") }}</td>
+                            <td>{{ $unit->updated_at->format("d/m/Y H:i") }}</td>
                             <td>
                                 <a
                                     class="btn btn-outline-dark"

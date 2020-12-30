@@ -2,8 +2,14 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use App\Models\Unit;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\Coupon;
+use App\Models\Course;
+use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -33,6 +39,32 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        Route::bind('user', function($value, $route) {
+            return $this->getModel(User::class, $value);
+        });
+
+        Route::bind('unit', function ($value, $route) {
+            return $this->getModel(Unit::class, $value);
+        });
+
+        Route::bind('course', function ($value, $route) {
+            return $this->getModel(Course::class, $value);
+        });
+
+        Route::bind('coupon', function ($value, $route) {
+            return $this->getModel(Coupon::class, $value);
+        });
+
+        Route::bind('order', function ($value, $route) {
+            return $this->getModel(Order::class, $value);
+        });
+    }
+
+    protected function getModel($model, $routeKey) {
+        $id = Hashids::connection($model)->decode($routeKey)[0] ?? null;
+        $modelInstance = resolve($model);
+        return $modelInstance->findOrFail($id);
     }
 
     /**
