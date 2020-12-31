@@ -29,6 +29,9 @@
 									<div class="ca-pic set-bg" data-setbg="img/authors/1.jpg"></div>
 									<p>{{ $course->teacher->name }}</p>
 								</div>
+								<div class="course-author">
+									<a href="{{ route('courses.show', ['course' => $course]) }}" class="btn-block site-btn">{{ __('Ver el curso') }}</a>
+								</div>
 							</div>
 						</div>
 					</div>

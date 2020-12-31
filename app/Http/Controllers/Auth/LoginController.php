@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Services\Cart;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -66,5 +67,12 @@ class LoginController extends Controller
             return (route('teacher.index'));
         }
         return (route('welcome'));
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        // $cart = new Cart;
+        // $cart->clear();
+        // dd($user);
     }
 }

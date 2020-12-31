@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\Cart;
+use App\Helpers\Currency;
 use App\Traits\Hashidable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -54,7 +56,12 @@ class Course extends Model
         '12.99' => '12.99€',
         '19.99' => '19.99€',
         '29.99' => '29.99€',
-        '49.99' => '49.99€'
+        '49.99' => '49.99€',
+    ];
+
+    protected $appends = [
+        'rating',
+        'formatted_price',
     ];
 
     public static function boot() {
@@ -68,7 +75,7 @@ class Course extends Model
     }
 
     protected $fillable = [
-        'user_id', 'title', 'description', 'picture', 'price', 'featured', 'status'
+        'user_id', 'title', 'description', 'picture', 'price', 'featured', 'status',
     ];
 
     public function imagePath() {
@@ -97,6 +104,7 @@ class Course extends Model
 
     public function scopeFiltered(Builder $builder) {
         $builder->with('teacher');
+        $builder->withCount('students');
         $builder->where('status', Course::PUBLISHED);
         if(session()->has('search[courses]')) {
             $builder->where('title', 'LIKE', '%' . session('search[courses]') . '%');
@@ -110,4 +118,26 @@ class Course extends Model
             ->where('user_id', auth()->id())
             ->paginate();
     }
+
+    public function getRatingAttribute() {
+        return round($this->reviews->avg('stars'), 2);
+    }
+
+    public function getFormattedPriceAttribute() {
+        return Currency::formatCurrency($this->price);
+    }
+    
+    public function totalVideoUnits() {
+        return $this->units->where('unit_type', Unit::VIDEO)->count();
+    }
+
+    public function totalFileUnits() {
+        return $this->units->where('unit_type', Unit::ZIP)->count();
+    }
+
+    public function totalTime() {
+        $minutes = $this->units->where('unit_type', Unit::VIDEO)->sum('unit_time');
+        return gmdate("H:i", $minutes * 60);
+    }
+
 }

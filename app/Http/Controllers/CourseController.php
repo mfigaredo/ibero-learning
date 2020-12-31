@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Services\Cart;
+use App\Helpers\Currency;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -23,5 +25,14 @@ class CourseController extends Controller
             session()->save();
         }
         return redirect(route('courses.index'));
+    }
+
+    public function show(Course $course) {
+        $course->load('units', 'students', 'reviews');
+        // dd($course);
+        // $amount = 12.5;
+        // dd(Currency::formatCurrency($amount));
+        // dd( (new Cart)->courseInCart($course) );
+        return view('learning.courses.show', compact('course'));
     }
 }

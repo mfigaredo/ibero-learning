@@ -41,6 +41,7 @@ Auth::routes();
 Route::group(['prefix' => 'courses', 'as' => 'courses.'], function() {
     Route::get('/', 'CourseController@index')->name('index');
     Route::post('/search', 'CourseController@search')->name('search');
+    Route::get('/{course}', 'CourseController@show')->name('show');
 });
 
 Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'middleware' => ['teacher']], function() {
@@ -67,4 +68,21 @@ Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'middleware' => ['teach
      */
     Route::get('/coupons', 'TeacherController@index')->name('coupons');
 
+});
+
+Route::get('/add-course-to-cart/{course}', 'StudentController@addCourseToCart')
+    ->name('add_course_to_cart');
+Route::get('/cart', 'StudentController@showCart')
+    ->name('cart');
+Route::get('/remove-course-from-cart/{course}', 'StudentController@removeCourseFromCart')
+    ->name('remove_course_from_cart');
+
+Route::post('/apply-coupon', 'StudentController@applyCoupon')
+    ->name('apply_coupon');
+
+Route::group(["middleware" => ["auth"]], function () {
+    Route::get('/checkout', 'CheckoutController@index')
+        ->name('checkout_form');
+    Route::post('/checkout', 'CheckoutController@processOrder')
+        ->name('process_checkout');
 });
