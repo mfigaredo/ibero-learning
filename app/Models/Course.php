@@ -42,6 +42,12 @@ use Illuminate\Database\Eloquent\Builder;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $students
  * @property-read int|null $students_count
  * @property-read \App\Models\User $teacher
+ * @property-read mixed $formatted_price
+ * @property-read mixed $rating
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Unit[] $units
+ * @property-read int|null $units_count
+ * @method static Builder|Course filtered()
+ * @method static Builder|Course forTeacher()
  */
 class Course extends Model
 {

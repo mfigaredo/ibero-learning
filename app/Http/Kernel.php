@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\NoDebugbar;
 use App\Http\Middleware\TeacherMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -66,5 +67,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'teacher' => TeacherMiddleware::class,
+        'noDebugbar' => NoDebugbar::class,
     ];
 }

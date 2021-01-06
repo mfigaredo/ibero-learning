@@ -36,6 +36,8 @@
     @include('partials.learning.navigation')
 
     @yield('hero')
+    
+    @component('components.alert-component')@endcomponent
 
     @yield('content')
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Providers\BladeServiceProvider;
+use Collective\Html\FormFacade;
 
 return [
 
@@ -230,6 +231,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Form' => \Collective\Html\FormFacade::class,
     ],
 
 ];

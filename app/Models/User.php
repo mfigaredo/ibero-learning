@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\Traits\Hashidable;
+use Laravel\Cashier\Billable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 /**
  * App\Models\User
@@ -39,9 +40,9 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable
 {
-    use Notifiable, Hashidable;
+    use Notifiable, Hashidable, Billable;
 
-    const ADMIN = 'ADMIN';
+    const ADMIN   = 'ADMIN';
     const TEACHER = 'TEACHER';
     const STUDENT = 'STUDENT';
 
@@ -74,5 +75,13 @@ class User extends Authenticatable
 
     public function isTeacher() {
         return $this->role === User::TEACHER;
+    }
+
+    public function courses_learning() {
+        return $this->belongsToMany(Course::class, 'course_student' );
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class);
     }
 }

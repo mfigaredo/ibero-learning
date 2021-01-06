@@ -26,9 +26,9 @@ Auth::routes();
 //     var_dump($imagen);
 // });
 
-// Route::get('/phpinfo', function() {
-//     phpinfo();
-// });
+Route::get('/phpinfo', function() {
+    phpinfo();
+})->middleware('noDebugbar');
 
 // Route::get('/test-debug', function() {
 //     $a = 1;
@@ -66,7 +66,14 @@ Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'middleware' => ['teach
     /**
      * COUPON Routes
      */
-    Route::get('/coupons', 'TeacherController@index')->name('coupons');
+    Route::get('/coupons', 'TeacherController@coupons')->name('coupons');
+    Route::get('/coupons/create', 'TeacherController@createCoupon')->name('coupons.create');
+    Route::post('/coupons/store', 'TeacherController@storeCoupon')->name('coupons.store');
+    Route::get('/coupons/{coupon}', 'TeacherController@editCoupon')->name('coupons.edit');
+    Route::put('/coupons/{coupon}', 'TeacherController@updateCoupon')->name('coupons.update');
+    Route::delete('/coupons/{coupon}', 'TeacherController@destroyCoupon')->name('coupons.destroy');
+
+
 
 });
 
@@ -86,3 +93,13 @@ Route::group(["middleware" => ["auth"]], function () {
     Route::post('/checkout', 'CheckoutController@processOrder')
         ->name('process_checkout');
 });
+
+// Route::filter('nodebugbar', function() {
+//     \Debugbar::disable();
+// });
+// Route::when('stripe/*', 'nodebugbar');
+
+Route::group(['middleware' => 'noDebugbar'], function() {
+    Route::post('stripe/webhook', 'StripeWebHookController@handleWebhook');
+});
+

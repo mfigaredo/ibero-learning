@@ -155,20 +155,22 @@ class Cart
                 // check discount type and apply
                 if ($coupon->discount_type === Coupon::PERCENT) {
                     $discount = round($priceCourses - ($priceCourses * ((100 - $coupon->discount) / 100)), 2);
-                    $withDiscount = $amount - $discount;
+                    $withDiscount = max( 0, $amount - $discount );
                 }
                 if ($coupon->discount_type === Coupon::PRICE) {
-                    $withDiscount = $amount - $coupon->discount;
+                    $withDiscount = max( 0, $amount - $coupon->discount );
+                    // $withDiscount = $withDiscount > 0 ? $withDiscount : 0;
                 }
             } else {
                 $this->removeCoupon();
                 return $amount;
             }
         }
-        if ($formatted) {
-            return Currency::formatCurrency($withDiscount);
-        }
-        return $withDiscount;
+        // if ($formatted) {
+        //     return Currency::formatCurrency($withDiscount);
+        // }
+        // return $withDiscount;
+        return $formatted ? Currency::formatCurrency($withDiscount) : $withDiscount;
     }
 
     protected function removeCoupon():void {

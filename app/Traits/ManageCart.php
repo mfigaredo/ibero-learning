@@ -27,8 +27,13 @@ trait ManageCart {
     public function applyCoupon() {
         session()->remove("coupon");
         session()->save();
-
+        
         $code = request("coupon");
+        if($code === null)  { 
+            session()->flash("message", ["warning", __("Se ha eliminado el cupón.")]);
+            return back();
+        }
+
         $coupon = Coupon::available($code)->first();
         if (!$coupon) {
             session()->flash("message", ["danger", __("El cupón que has introducido no existe")]);
