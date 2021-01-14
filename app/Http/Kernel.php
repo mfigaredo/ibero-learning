@@ -3,6 +3,8 @@
 namespace App\Http;
 
 use App\Http\Middleware\NoDebugbar;
+use App\Http\Middleware\CanReviewCourse;
+use App\Http\Middleware\CanAccessToCourse;
 use App\Http\Middleware\TeacherMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -68,5 +70,7 @@ class Kernel extends HttpKernel
 
         'teacher' => TeacherMiddleware::class,
         'noDebugbar' => NoDebugbar::class,
+        'can_access_to_course' => CanAccessToCourse::class,
+        'can_review_course' => CanReviewCourse::class,
     ];
 }

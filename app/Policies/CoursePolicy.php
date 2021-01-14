@@ -27,4 +27,16 @@ class CoursePolicy
         $courseInCart = (new Cart)->courseInCart($course);
         return !$isTeacher && !$coursePurchased && !$courseInCart;
     }
+
+    public function review(User $user, Course $course) {
+        $coursePurchased = $course->students->contains($user->id);
+        if(!$coursePurchased) {
+            session()->flash('message',['danger', __('No has comprado el curso.')]);
+        }
+        $reviewed = $course->reviews->contains('user_id', $user->id);
+        if($reviewed) {
+            session()->flash('message',['danger', __('Ya valoraste este curso.')]);
+        }
+        return $coursePurchased && !$reviewed;
+    }
 }

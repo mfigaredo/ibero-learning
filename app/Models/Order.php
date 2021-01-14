@@ -29,6 +29,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Coupon|null $coupon
+ * @property-read mixed $formatted_status
+ * @property-read mixed $formatted_total_amount
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrderLine[] $orderLines
+ * @property-read int|null $order_lines_count
+ * @property-read mixed $coupon_code
  */
 class Order extends Model
 {
@@ -41,9 +47,10 @@ class Order extends Model
     protected $appends = [
         'formatted_total_amount',
         'formatted_status',
+        'coupon_code',
     ];
 
-    public function orderLines() {
+    public function order_lines() {
         return $this->hasMany(OrderLine::class);
     }
 
@@ -57,5 +64,12 @@ class Order extends Model
 
     public function getFormattedStatusAttribute() {
         return $this->status === self::SUCCESS ? __('Procesado') : __('Pendiente');
+    }
+
+    public function getCouponCodeAttribute() {
+        if($this->coupon_id) {
+            return $this->coupon->code;
+        }
+        return 'N/A';
     }
 }

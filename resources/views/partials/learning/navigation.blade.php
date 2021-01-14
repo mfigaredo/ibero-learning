@@ -39,6 +39,12 @@
                                 <a class="brand-text" href="{{ route('teacher.index') }}">{{ __('Profesor') }}</a>
                             </li>
                         @endteacher
+
+                        @auth
+                            <li>
+                                <a class="brand-text" href="{{ route('student.index') }}">{{ __('Estudiante') }}</a>
+                            </li>
+                        @endauth
                     </ul>
                 </nav>
                 

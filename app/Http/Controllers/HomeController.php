@@ -25,4 +25,13 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function google() {
+        return $this->subMethod();
+        // return redirect('http://google.com');
+    }
+
+    protected function subMethod() {
+        return redirect('http://google.com');
+    }
 }

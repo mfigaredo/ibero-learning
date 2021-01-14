@@ -19,8 +19,7 @@
             {!! __('Ya está en el <a href=":ruta">carrito</a>.', ['ruta' => route('cart')]) !!}
         @else
             <a
-                {{-- href="{{ route("courses.learn", ["course" => $course]) }}" --}}
-                href="#"
+                href="{{ route("courses.learn", ["course" => $course]) }}"
                 class="site-btn btn-block"
             >
                 {{ __("Ir al curso") }}

@@ -19,6 +19,7 @@ Route::get('/', 'WelcomeController@index')->name("welcome");
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/google', 'HomeController@google')->name('google');
 
 // Route::get('/prueba', function() {
 //     var_dump(storage_path('app/public/categories'));
@@ -42,6 +43,12 @@ Route::group(['prefix' => 'courses', 'as' => 'courses.'], function() {
     Route::get('/', 'CourseController@index')->name('index');
     Route::post('/search', 'CourseController@search')->name('search');
     Route::get('/{course}', 'CourseController@show')->name('show');
+    Route::get('/{course}/learn', 'CourseController@learn')->name('learn')->middleware('can_access_to_course');
+
+    Route::get('/{course}/review', 'CourseController@createReview')->name('reviews.create'); 
+    //->middleware('can_review_course');   // Custom middleware
+    // ->middleware('can:review,course');  // Policy
+    Route::post('/{course}/review', 'CourseController@storeReview')->name('reviews.store')->middleware('can_review_course');
 });
 
 Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'middleware' => ['teacher']], function() {
@@ -73,8 +80,17 @@ Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'middleware' => ['teach
     Route::put('/coupons/{coupon}', 'TeacherController@updateCoupon')->name('coupons.update');
     Route::delete('/coupons/{coupon}', 'TeacherController@destroyCoupon')->name('coupons.destroy');
 
+});
 
+Route::group(['prefix' => 'student', 'as' => 'student.', 'middleware' => ['auth']], function() {
+    Route::get('/', 'StudentController@index')->name('index');
+    Route::get('/courses', 'StudentController@courses')->name('courses');
+    Route::get('/orders', 'StudentController@orders')->name('orders');
+    Route::get('/orders/{order}', 'StudentController@showOrder')->name('orders.show');
+    Route::get('/orders/{order}/download_invoice', 'StudentController@downloadInvoice')->name('orders.download_invoice');
 
+    Route::get('credit-card', 'BillingController@creditCardForm')->name('billing.credit_card_form');
+    Route::post('credit-card', 'BillingController@processCreditCardForm')->name('billing.process_credit_card');
 });
 
 Route::get('/add-course-to-cart/{course}', 'StudentController@addCourseToCart')
@@ -102,4 +118,6 @@ Route::group(["middleware" => ["auth"]], function () {
 Route::group(['middleware' => 'noDebugbar'], function() {
     Route::post('stripe/webhook', 'StripeWebHookController@handleWebhook');
 });
+
+
 

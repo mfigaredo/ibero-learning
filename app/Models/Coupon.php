@@ -40,6 +40,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $courses_count
  * @method static Builder|Coupon available(string $code)
  * @method static Builder|Coupon forTeacher()
+ * @method static \Illuminate\Database\Query\Builder|Coupon onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Coupon withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Coupon withoutTrashed()
  */
 class Coupon extends Model
 {

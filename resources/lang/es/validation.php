@@ -196,5 +196,6 @@ return [
         'courses'               => 'cursos',
         'code'                  => 'código',
         'discount'              => 'descuento',
+        'review'                => 'reseña',
     ],
 ];
