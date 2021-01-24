@@ -108,13 +108,30 @@ class Course extends Model
         return $this->hasMany(Unit::class)->orderBy('order', 'asc');
     }
 
-    public function scopeFiltered(Builder $builder) {
-        $builder->with('teacher');
+    public function wishlists() {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function wishedForUser() {
+        return $this->wishlists
+            // ->where('user_id', auth()->id())
+            ->where('course_id', $this->id)
+            ->count();
+    }
+
+    public function scopeFiltered(Builder $builder, Category $category = null) {
+        $builder->with('teacher', 'categories', 'wishlists');
         $builder->withCount('students');
         $builder->where('status', Course::PUBLISHED);
         if(session()->has('search[courses]')) {
             $builder->where('title', 'LIKE', '%' . session('search[courses]') . '%');
         }
+        if($category) {
+            $builder->whereHas('categories', function(Builder $table) use ($category) {
+                $table->where('id', $category->id);
+            });
+        }
+
         return $builder->paginate(6);
     }
 

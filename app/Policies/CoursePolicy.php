@@ -30,11 +30,12 @@ class CoursePolicy
 
     public function review(User $user, Course $course) {
         $coursePurchased = $course->students->contains($user->id);
-        if(!$coursePurchased) {
+        // dd(\Request::is('*/learn'));
+        if(!$coursePurchased && \Request::is('*/learn')) {
             session()->flash('message',['danger', __('No has comprado el curso.')]);
         }
         $reviewed = $course->reviews->contains('user_id', $user->id);
-        if($reviewed) {
+        if($reviewed && \Request::is('*/review')) {
             session()->flash('message',['danger', __('Ya valoraste este curso.')]);
         }
         return $coursePurchased && !$reviewed;

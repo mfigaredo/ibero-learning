@@ -50,16 +50,19 @@
                 </div>
             @endforelse
         </div>
-        @can('review', $course)
-            <div class="card-footer">
+        <div class="card-footer">
+            @can('review', $course)
                 <a
                     href="{{ route('courses.reviews.create', ['course' => $course]) }}"
                     class="site-btn btn-block"
                 >
                     {{ __("Valorar el curso") }}
                 </a>
-            </div>
-        @endcan
+            @endcan
+            <a href="{{ route('courses.topics.index', ['course' => $course]) }}" class="site-btn btn-block">
+                {{ __('Ir al foro') }}
+            </a>
+        </div>
     </div>
 </div>
 

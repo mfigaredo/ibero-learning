@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Course;
+use App\Models\Category;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -58,6 +59,10 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('order', function ($value, $route) {
             return $this->getModel(Order::class, $value);
+        });
+        
+        Route::bind('category', function ($value, $route) {
+            return $this->getModel(Category::class, $value);
         });
     }
 

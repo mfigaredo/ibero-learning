@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Review;
 use App\Services\Cart;
+use App\Models\Category;
 use App\Helpers\Currency;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,7 @@ class CourseController extends Controller
     }
 
     public function show(Course $course) {
-        $course->load('units', 'students', 'reviews');
+        $course->load('units', 'students', 'reviews.author');
         // dd($course);
         // $amount = 12.5;
         // dd(Currency::formatCurrency($amount));
@@ -76,5 +77,10 @@ class CourseController extends Controller
             ->with("message", ["success", __("Muchas gracias por valorar el curso")]);
     }
 
+    public function byCategory(Category $category) {
+
+        $courses = Course::filtered($category);
+        return view('learning.courses.by_category', compact('courses', 'category'));
+    }
     
 }

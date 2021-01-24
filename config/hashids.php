@@ -66,6 +66,10 @@ return [
             'salt' => \App\Models\Order::class.'a7d111409c5df4c897523b82e0d0d91e',
             'length' => 10,
         ],
+        \App\Models\Category::class => [
+            'salt' => \App\Models\Category::class.'41242a63270431751ffa25934c02b572',
+            'length' => 10,
+        ],
     ],
 
 ];
